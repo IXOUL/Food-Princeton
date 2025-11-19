@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Lucille’s Diet Data Archive</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <!-- D3 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+</head>
+
+<body>
+
+
+
+   
+
+    <!-- ============================
+         HEADER
+         ============================ -->
+    <!-- <div class="container">
+        <h1>Lucille’s Diet Data Archive</h1>
+        <p>General Porject description; still elaborating on it </p>
+        <hr />
+    </div> -->
+     <img src="/img/logo.svg" alt="Logo">
+
+
+    <!-- ============================
+         PART 1: GRID CALENDAR
+         ============================ -->
+    <nav class="main-nav">
+        <a href="index.html" class="active">Calendar</a>
+        <a href="visualizations.html">Visualizations</a>
+        <a href="locations.html">Location Explorer</a>
+        <a href="narrative.html">Narrative</a>
+    </nav>
+
+    <div class="container" id="calendar-section">
+        <h2>📅 Photo Calendar</h2>
+        <p>Calendar</p>
+
+        <div id="calendar"></div>
+    </div>
+
+    <!-- ============================
+         MODAL VIEWER
+         ============================ -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <img id="modal-img" class="modal-img" />
+            <h3 id="modal-title"></h3>
+            <p id="modal-text"></p>
+        </div>
+    </div>
+
+    <script src="calendar.js"></script>
+    <!-- ============================
+         JAVASCRIPT
+         ============================ -->
+    <script>
+        fetch("data.json")
+            .then(response => response.json())
+            .then(data => {
+                const { sortedData } = CalendarModule.prepareEntries(data);
+
+                /* ============================
+                   MODAL BINDING
+                   ============================ */
+                const modal = document.getElementById("modal");
+
+                const openModal = (item) => {
+                    document.getElementById("modal-img").src = item.img;
+                    document.getElementById("modal-title").innerText =
+                        `${item.date} · ${item.specificLocation}`;
+                    document.getElementById("modal-text").innerText =
+                        item.description || item.note || "Too normal to give comment";
+                    modal.style.display = "flex";
+                };
+
+                modal.onclick = () => modal.style.display = "none";
+
+                CalendarModule.renderCalendar(sortedData, {
+                    containerId: "calendar",
+                    onCellClick: openModal
+                });
+            });
+    </script>
+
+</body>
+</html>

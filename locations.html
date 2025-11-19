@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Lucille’s Diet Data Archive · Locations</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Lucille’s Diet Data Archive</h1>
+        <p>diary sorted by location</p>
+        <hr />
+    </div>
+
+    <nav class="main-nav">
+        <a href="index.html">Calendar</a>
+        <a href="visualizations.html">Visualizations</a>
+        <a href="locations.html" class="active">Location Explorer</a>
+        <a href="narrative.html">Narrative</a>
+    </nav>
+
+    <div class="container location-explorer-section">
+        <h2>📍 Location Explorer</h2>
+        <p>Click any location to revisit everything I ate there.</p>
+        <div class="location-panel">
+            <div id="location-list" class="location-list"></div>
+            <div id="location-feed" class="location-feed">
+                <p class="location-placeholder">Select a location from the left to load its photos.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="calendar.js"></script>
+    <script src="locationExplorer.js"></script>
+    <script>
+        fetch("data.json")
+            .then(response => response.json())
+            .then(data => {
+                const { sortedData } = CalendarModule.prepareEntries(data);
+                LocationExplorerModule.renderLocations(sortedData);
+            });
+    </script>
+</body>
+
+</html>
