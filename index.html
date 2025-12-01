@@ -6,6 +6,9 @@
     <title>Lucille’s Diet Data Archive</title>
 
     <!-- External CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Zalando+Sans+SemiExpanded:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
     <!-- Plotly -->
@@ -17,18 +20,14 @@
 
 <body>
 
+    <nav class="section-nav">
+        <a href="#intro-section">Introduction</a>
+        <a href="#calendar-section">Meal Calendar</a>
+        <a href="#visualization-section">Visualizations</a>
+        <a href="#conclusion-section">Conclusion</a>
+    </nav>
 
 
-   
-
-    <!-- ============================
-         HEADER
-         ============================ -->
-    <!-- <div class="container">
-        <h1>Lucille’s Diet Data Archive</h1>
-        <p>General Porject description; still elaborating on it </p>
-        <hr />
-    </div> -->
      <img src="/img/logo.svg" alt="Logo">
 
 
@@ -41,12 +40,41 @@
         <a href="locations.html">Location Explorer</a>
         <a href="narrative.html">Narrative</a>
     </nav>
+    
+
+    <div class="container title-center" id="intro-section">
+        <h2 class="section-title">Introduction</h2>
+    </div>
+    <p class="text-style">As an international student, one of the most urgant adjustments to studying abroad is the food. While most dishes in the dining hall are edible, they are often not particularly delicious to me. 
+        
+        So I also began exploring different places to eat around campus. </p>
+    <p class="text-style">
+        Since my family frequently checks in to see whether I’m living well, I developed the habit of taking a photo of every meal I eat. Over time, I also became curious about my own reactions to these meals, so I started jotting down short notes while reorganizing my data.
+    </p>
+    <p class="text-style">
+        In total, I recorded <span class="stat-highlight">80 meals</span> over <span class="stat-highlight">36 days</span> during my first semester at Princeton, from October 25 to the end of Thanksgiving break on November 30.
+    </p>
+
 
     <div class="container" id="calendar-section">
         <h2 class="section-title">Meal Calendar</h2>
-        <p class="lead-copy">Scroll horizontally to see what I have for each day!</p>
-
+    </div>
+        <p class="text-style">My data was originally stored in a Google spreadsheet. To make the patterns easier to see, I designed a calendar-style modal view for the meals. I divided each day into five time slots: <span class="stat-highlight">morning</span> for breakfast, <span class="stat-highlight">noon</span> for a regular lunch, <span class="stat-highlight">afternoon</span> for a late lunch, <span class="stat-highlight">evening</span> for a regular dinner, and <span class="stat-highlight">night</span> for a late or unusual dinner time.</p>
+        <p class="text-style">As the semester went on, though, I realized I rarely had a proper breakfast. On many mornings, I simply grabbed snacks or yogurt before my 9:30 a.m. class. Since these quick snacks didn’t feel like “real meals,” I didn’t photograph them or include them in the dataset.</p>
+        <p class="text-style"><span class="stat-highlight">Scroll horizontally</span> to see what I have for each day!</p>
+        <p class="text-style"><span class="stat-highlight">Click</span> on any image to view the meal details!</p>
+    <div class="container">
         <div id="calendar"></div>
+    </div>
+
+    <div class="container title-center" id="visualization-section">
+        <h2 class="section-title">Visualizations</h2>
+
+    </div>
+
+    <div class="container title-center" id="conclusion-section">
+        <h2 class="section-title">Conclusion</h2>
+
     </div>
 
     <!-- ============================
@@ -77,8 +105,15 @@
 
                 const openModal = (item) => {
                     document.getElementById("modal-img").src = item.img;
+                    const locationTag = (() => {
+                        if (item.onCampus === undefined || item.onCampus === null) return "";
+                        const val = typeof item.onCampus === "string" ? item.onCampus.toLowerCase() : item.onCampus;
+                        if (val === "y" || val === true) return "Campus";
+                        if (val === "n" || val === false) return "Restaurant";
+                        return "";
+                    })();
                     document.getElementById("modal-title").innerText =
-                        `${item.date} · ${item.specificLocation}`;
+                        [item.date, locationTag, item.specificLocation].filter(Boolean).join(" · ");
                     document.getElementById("modal-text").innerText =
                         item.description || item.note || "Too normal to give comment";
                     modal.style.display = "flex";

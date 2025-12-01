@@ -145,7 +145,7 @@
 
         const copy = document.createElement("div");
         copy.className = "controls-copy";
-        copy.innerHTML = `<strong>Scroll Horizontally to see what I have for each day!</strong>`;
+        // copy.innerHTML = `<strong>Scroll Horizontally to see what I have for each day!</strong>`;
         controls.appendChild(copy);
 
         return controls;
