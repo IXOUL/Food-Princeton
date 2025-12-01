@@ -8,9 +8,9 @@
             return acc;
         }, new Map());
 
-    const getMealChartData = (sortedData = []) => {
+    const getMealChartData = (sortedData = [], totalDays = 1) => {
         const foodEntries = sortedData.filter(item => category(item.category) === "food");
-        const totalMeals = foodEntries.length || 1;
+        const days = totalDays || 1;
 
         const mealBuckets = [
             { label: "Breakfast", slots: ["Morning"] },
@@ -25,8 +25,27 @@
                 (acc, entry) => acc + (bucket.slots.includes(entry.timeOfDay) ? 1 : 0),
                 0
             );
-            const percent = Math.round((count / totalMeals) * 1000) / 10;
-            return { label: bucket.label, count, percent };
+            const percentDays = Math.round((count / days) * 1000) / 10;
+            return { label: bucket.label, count, percentDays };
+        });
+    };
+
+    const getMealComboData = (sortedData = [], totalDays = 1) => {
+        const foodEntries = sortedData.filter(item => category(item.category) === "food");
+        const days = totalDays || 1;
+        const mealBuckets = [
+            { label: "Breakfast", slots: ["Morning"] },
+            { label: "Lunch<br>(Lunch + Afternoon)", slots: ["Noon", "Afternoon"] },
+            { label: "Dinner<br>(Dinner + Night)", slots: ["Evening", "Night"] }
+        ];
+
+        return mealBuckets.map(bucket => {
+            const count = foodEntries.reduce(
+                (acc, entry) => acc + (bucket.slots.includes(entry.timeOfDay) ? 1 : 0),
+                0
+            );
+            const percentDays = Math.round((count / days) * 1000) / 10;
+            return { label: bucket.label, count, percentDays };
         });
     };
 
@@ -65,8 +84,11 @@
         }
 
         const locationCounts = getLocationCounts(sortedData);
+        const totalDays = new Set(sortedData.map(item => item.date)).size || 1;
         const totalVisits = sortedData.length || 1;
-        const frequentLocations = Array.from(locationCounts.entries()).filter(([, count]) => count > 1);
+        const frequentLocations = Array.from(locationCounts.entries())
+            .filter(([, count]) => count > 1)
+            .sort((a, b) => b[1] - a[1]);
         const singleVisitLocations = Array.from(locationCounts.entries())
             .filter(([, count]) => count === 1)
             .map(([name]) => name);
@@ -104,21 +126,37 @@
             });
         }
 
-        const mealChartData = getMealChartData(sortedData);
+        const mealChartData = getMealChartData(sortedData, totalDays);
+        const mealComboData = getMealComboData(sortedData, totalDays);
 
         Plotly.newPlot("plot4", [{
-            x: mealChartData.map(m => m.percent),
+            x: mealChartData.map(m => m.percentDays),
             y: mealChartData.map(m => m.label),
             type: "bar",
             orientation: "h",
-            text: mealChartData.map(m => `${m.count} (${m.percent}%)`),
+            text: mealChartData.map(m => `${m.count} (${m.percentDays}%)`),
             textposition: "auto",
             marker: { color: ["#ffa600", "#ff6361", "#bc5090", "#58508d", "#003f5c"] }
         }], {
-            title: "Meal Time (percent of food entries)",
-            xaxis: { title: "Percent of food entries" },
+            title: "Meal Time (percent of days)",
+            xaxis: { title: "Percent of days with this meal" },
             yaxis: { automargin: true },
             margin: { l: 140 }
+        });
+
+        Plotly.newPlot("plot5", [{
+            x: mealComboData.map(m => m.percentDays),
+            y: mealComboData.map(m => m.label),
+            type: "bar",
+            orientation: "h",
+            text: mealComboData.map(m => `${m.count} (${m.percentDays}%)`),
+            textposition: "auto",
+            marker: { color: ["#ffa600", "#ff6361", "#003f5c"] }
+        }], {
+            title: "Core Meals (percent of days)",
+            xaxis: { title: "Percent of days with this meal (combined)" },
+            yaxis: { automargin: true },
+            margin: { l: 180 }
         });
 
         renderSummary("viz-summary", sortedData);
