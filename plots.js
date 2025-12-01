@@ -1,6 +1,35 @@
 (function (global) {
     const category = (value = "") => value.toLowerCase();
 
+    const groupDailySatisfaction = (sortedData = []) => {
+        const dailyMap = new Map();
+        sortedData.forEach(item => {
+            const val = parseFloat(item.satisfaction);
+            if (Number.isNaN(val)) return;
+            const day = item.date;
+            if (!dailyMap.has(day)) dailyMap.set(day, []);
+            dailyMap.get(day).push(val);
+        });
+        return Array.from(dailyMap.entries())
+            .map(([day, values]) => ({
+                date: day,
+                avg: values.reduce((a, b) => a + b, 0) / values.length
+            }))
+            .sort((a, b) => new Date(a.date) - new Date(b.date));
+    };
+
+    const smoothSeries = (points = [], window = 3) => {
+        if (!points.length) return [];
+        const half = Math.floor(window / 2);
+        return points.map((_, idx) => {
+            const start = Math.max(0, idx - half);
+            const end = Math.min(points.length - 1, idx + half);
+            const slice = points.slice(start, end + 1);
+            const avg = slice.reduce((sum, p) => sum + p.avg, 0) / slice.length;
+            return { date: points[idx].date, avg };
+        });
+    };
+
     const getLocationCounts = (sortedData = []) =>
         sortedData.reduce((acc, item) => {
             const key = item.specificLocation || "Unknown";
@@ -85,6 +114,8 @@
 
         const locationCounts = getLocationCounts(sortedData);
         const totalDays = new Set(sortedData.map(item => item.date)).size || 1;
+        const dailySatisfaction = groupDailySatisfaction(sortedData);
+        const smoothedSatisfaction = smoothSeries(dailySatisfaction, 3);
         const totalVisits = sortedData.length || 1;
         const frequentLocations = Array.from(locationCounts.entries())
             .filter(([, count]) => count > 1)
@@ -100,29 +131,44 @@
             `${count} (${locationPercents[idx]}%)`
         );
 
-        Plotly.newPlot("plot1", [{
-            x: sortedData.map(d => d.date),
-            y: sortedData.map(d => d.satisfaction),
-            type: "scatter",
-            mode: "lines+markers",
-            marker: { size: 8 }
-        }], { title: "Satisfaction Over Time" });
+        Plotly.newPlot("plot1", [
+            {
+                x: dailySatisfaction.map(d => d.date),
+                y: dailySatisfaction.map(d => d.avg),
+                type: "scatter",
+                mode: "markers",
+                name: "Daily avg",
+                marker: { size: 8, color: "#888" }
+            },
+            {
+                x: smoothedSatisfaction.map(d => d.date),
+                y: smoothedSatisfaction.map(d => d.avg),
+                type: "scatter",
+                mode: "lines",
+                name: "Smoothed (3-day)",
+                line: { color: "#111111", width: 3, shape: "spline", smoothing: 0.6 }
+            }
+        ], {
+            title: "Satisfaction Over Time (daily average, smoothed)",
+            yaxis: { title: "Average satisfaction" },
+            xaxis: { title: "Date" }
+        });
 
         const locationTarget = document.getElementById("plot2");
         if (!locationLabels.length && locationTarget) {
             locationTarget.innerHTML = "<p class=\"chart-note\">No repeat locations yet — start logging more visits to see this chart.</p>";
         } else {
             Plotly.newPlot("plot2", [{
-                x: locationLabels,
-                y: locationPercents,
-                type: "bar",
+                labels: locationLabels,
+                values: locationPercents,
+                type: "pie",
                 text: locationCountsText,
-                textposition: "auto",
-                marker: { color: "#111111" }
+                textinfo: "label+percent",
+                hovertemplate: "%{label}<br>%{value}% (%{text})<extra></extra>",
+                marker: { colors: ["#111111", "#444444", "#666666", "#888888", "#aaaaaa", "#cccccc"] }
             }], {
                 title: "Frequency by Location (percent of visits)",
-                yaxis: { title: "Percent of total visits" },
-                margin: { b: 120, t: 60 }
+                showlegend: false
             });
         }
 

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Lucille’s Diet Data Archive</title>
+    <title>Food @ Princeton · Lucille’s Diet Data Archive</title>
 
     <!-- External CSS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,21 +24,45 @@
         <a href="#intro-section">Introduction</a>
         <a href="#calendar-section">Meal Calendar</a>
         <a href="#visualization-section">Visualizations</a>
+        <a href="#location-section">Location</a>
         <a href="#conclusion-section">Conclusion</a>
     </nav>
 
 
-     <img src="/img/logo.svg" alt="Logo">
+    <div class="page-title-wrap">
+        <h1 class="page-title">Food @ Princeton</h1>
+        <p class="page-subtitle">Lucille Wang · FRS174</p>
+    </div>
+    <div class="anime-strip">
+        <div class="anime-track">
+            <img src="img/1762672803304915.jpg" alt="">
+            <img src="img/IMG_9807.jpg" alt="">
+            <img src="img/IMG_9272.jpg" alt="">
+            <img src="img/188d5db7dfb0392bf72f04970e9f7d4b.jpg" alt="">
+            <img src="img/IMG_0458.jpg" alt="">
+            <img src="img/fxn1.jpg" alt="">
+            <img src="img/fxn3.jpg" alt="">
+            <img src="img/fxn4.jpg" alt="">
+            <img src="img/IMG_9282.jpg" alt="">
+            <img src="img/IMG_9247.jpg" alt="">
+            <img src="img/IMG_9564.jpg" alt="">
+            <img src="img/IMG_9734.jpg" alt="">
+            <!-- duplicate sequence for seamless scroll -->
+            <img src="img/1762672803304915.jpg" alt="">
+            <img src="img/IMG_9807.jpg" alt="">
+            <img src="img/IMG_9272.jpg" alt="">
+            <img src="img/188d5db7dfb0392bf72f04970e9f7d4b.jpg" alt="">
+            <img src="img/IMG_0458.jpg" alt="">
+            <img src="img/fxn1.jpg" alt="">
+            <img src="img/fxn3.jpg" alt="">
+            <img src="img/fxn4.jpg" alt="">
+            <img src="img/IMG_9282.jpg" alt="">
+            <img src="img/IMG_9247.jpg" alt="">
+            <img src="img/IMG_9564.jpg" alt="">
+            <img src="img/IMG_9734.jpg" alt="">
+        </div>
+    </div>
 
-
-    <!-- ============================
-         PART 1: GRID CALENDAR
-         ============================ -->
-    <nav class="main-nav">
-        <a href="visualizations.html">Visualizations</a>
-        <a href="locations.html">Location Explorer</a>
-    </nav>
-    
 
     <div class="container title-center" id="intro-section">
         <h2 class="section-title">Introduction</h2>
@@ -67,13 +91,38 @@
 
     <div class="container title-center" id="visualization-section">
         <h2 class="section-title">Visualizations</h2>
+    </div>
 
+    <div class="container viz-section">
+        <div id="viz-summary" class="viz-summary-card"></div>
+
+        <div id="plot1" class="chart"></div>
+        <div id="plot2" class="chart"></div>
+        <div id="location-outliers" class="chart-note outlier-box"></div>
+        <div id="plot4" class="chart"></div>
+        <div id="plot5" class="chart"></div>
+        <p class="chart-note">Meal time percentages are calculated over all food entries; afternoon and night late meals are split out.</p>
+    </div>
+
+    <div class="container title-center" id="location-section">
+        <h2 class="section-title">Location Explorer</h2>
+        
+    </div>
+    <div class="container">
+    <p class="text-style">Click any location to revisit everything I ate there.</p>
+        <div class="location-panel">
+            <div id="location-list" class="location-list"></div>
+            <div id="location-feed" class="location-feed">
+                <p class="location-placeholder">Select a location from the left to load its photos.</p>
+            </div>
+        </div>
     </div>
 
     <div class="container title-center" id="conclusion-section">
         <h2 class="section-title">Conclusion</h2>
 
     </div>
+
 
     <!-- ============================
          MODAL VIEWER
@@ -87,6 +136,8 @@
     </div>
 
     <script src="calendar.js"></script>
+    <script src="locationExplorer.js"></script>
+    <script src="plots.js"></script>
     <!-- ============================
          JAVASCRIPT
          ============================ -->
@@ -123,6 +174,9 @@
                     containerId: "calendar",
                     onCellClick: openModal
                 });
+
+                LocationExplorerModule.renderLocations(sortedData);
+                DataVizModule.renderPlots(sortedData);
             });
     </script>
 

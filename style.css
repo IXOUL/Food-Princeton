@@ -55,6 +55,124 @@ h1, h2 {
     border-color: #000000;
 }
 
+.page-title-wrap {
+    text-align: center;
+    margin: 18px 0 18px;
+}
+
+.page-title {
+    position: relative;
+    display: inline-block;
+    padding: 10px 22px;
+    color: #111;
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    background: transparent;
+    box-shadow: none;
+}
+
+.page-title:hover {
+    letter-spacing: 0.12em;
+}
+
+.page-subtitle {
+    margin: 2px 0 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #000000;
+    letter-spacing: 0.05em;
+    font-family: "Atkinson Hyperlegible", sans-serif;
+}
+
+.page-title::before,
+.page-title::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 88px;
+    height: 2px;
+    background: #f7c741;
+}
+
+.page-title::before {
+    left: -90px;
+}
+
+.page-title::after {
+    right: -90px;
+}
+
+.anime-strip {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 18px 0 66px;
+    mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+    background: #f7f7f7;
+}
+
+.anime-track {
+    display: flex;
+    gap: 14px;
+    width: max-content;
+    animation: anime-scroll 60s linear infinite;
+}
+
+.anime-track img {
+    height: 120px;
+    width: 160px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+    filter: saturate(1.08);
+}
+
+@keyframes anime-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.icon-field {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 16px;
+    padding: 16px 12%;
+    background: #ffffff;
+}
+
+.icon-dot {
+    background: #f7f7f7;
+    border: 1px solid #e6e6e6;
+    border-radius: 16px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: diagonal-drift 8s ease-in-out infinite;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.06);
+}
+
+.icon-dot img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
+
+.icon-dot:nth-child(3n) { animation-delay: 0.7s; }
+.icon-dot:nth-child(4n) { animation-delay: 1.1s; }
+.icon-dot:nth-child(5n) { animation-delay: 1.5s; }
+.icon-dot:nth-child(6n) { animation-delay: 1.9s; }
+
+@keyframes diagonal-drift {
+    0% { transform: translate(-10px, -10px) scale(1); }
+    50% { transform: translate(10px, 10px) scale(1.03); }
+    100% { transform: translate(-10px, -10px) scale(1); }
+}
+
 .section-nav {
     position: sticky;
     top: 0;
