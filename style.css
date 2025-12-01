@@ -57,7 +57,7 @@ h1, h2 {
 
 .page-title-wrap {
     text-align: center;
-    margin: 18px 0 18px;
+    margin: 10px 0 50px;
 }
 
 .page-title {
@@ -65,7 +65,7 @@ h1, h2 {
     display: inline-block;
     padding: 10px 22px;
     color: #111;
-    font-size: 3rem;
+    font-size: 4.5rem;
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -80,7 +80,7 @@ h1, h2 {
 
 .page-subtitle {
     margin: 2px 0 0;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: 600;
     color: #000000;
     letter-spacing: 0.05em;
@@ -123,8 +123,8 @@ h1, h2 {
 }
 
 .anime-track img {
-    height: 120px;
-    width: 160px;
+    height: 180px;
+    width: 240px;
     object-fit: cover;
     border-radius: 12px;
     box-shadow: 0 8px 18px rgba(0,0,0,0.12);
