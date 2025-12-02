@@ -94,11 +94,32 @@
     </div>
 
     <div class="container viz-section">
-        <div id="viz-summary" class="viz-summary-card"></div>
 
-        <div id="plot1" class="chart"></div>
+        <p class="text-style"> <strong>Satisfaction Over Time</strong></p>
 
-        <p class="text-style">I also created a pie chart to show how often I visit each place to eat.</p>
+        <p class="text-style">
+        From October 26 to November 30 (80 meals over 36 days), I rated every meal on a 
+        <span class="stat-highlight">1–10 scale</span>. 
+        For each day, I calculated the <span class="stat-highlight">daily average</span> 
+        of all the meals I had. I then smoothed the plot to observe the overall trend.
+        </p>
+
+        <div id="plot1" class="chart text-style"></div>
+
+        <p class="text-style">
+        The trend shows that my <span class="stat-highlight">satisfaction is increasing</span> 
+        over time. I think this is because as the semester went on, I stopped worrying about 
+        distance and focused more on finding good food, such as checking the dining hall menus 
+        for ramen or stir-fry.
+        </p>
+
+        <p class="text-style">
+        Another factor is that if I’m not hungry, I prefer to skip a meal; but if I am hungry, 
+        everything tastes better lol.
+        </p>
+
+        <p class="text-style"><strong>Frequency By Location</strong></p>
+        <p class="text-style">I also created a pie chart to show how often I visit each place to eat, in total of 17 different locations. In particular, I grouped all the locations in NYC together for convenience (otherwise each one would appear as an outlier).</p>
         <div id="plot2" class="chart text-style"></div>
         <p class="text-style">Notably, <span class="stat-highlight">Rocky Dining Hall</span> accounts for about 1/4 of all my meals. This makes sense. Since I live in Rocky, my dorm is only a one-minute walk from the dining hall, whereas going anywhere else takes at least six minutes. I also usually take a nap at noon, so to save time, I often go straight to Rocky for lunch.</p>
         <p class="text-style">The second-largest portion is <span class="stat-highlight">NYC</span>. The food there is incredibly diverse and delicious. So during my four-day stay in Thanksgiving break, I ate every meal on time and even had snacks and boba every day. I did have the <em>best Thai food</em> <span class="stat-highlight">Mitr Thai</span> and the <em>best boba</em> <span class="stat-highlight">HeyTea Lab</span> ever near Times Square!</p>
@@ -107,9 +128,11 @@
         </p>
 
         <div id="location-outliers" class="text-style"></div>
-        <div id="plot4" class="chart"></div>
-        <div id="plot5" class="chart"></div>
-        <p class="chart-note">Meal time percentages are calculated over the total dates.</p>
+
+        <p class="text-style"><strong>Meal Frequency</strong></p>
+        <div id="plot4" class="chart text-style"></div>
+        <div id="plot5" class="chart text-style"></div>
+        <p class="chart-note text-style">Meal time percentages are calculated over the total dates.</p>
     </div>
 
     <div class="container title-center" id="location-section">

@@ -156,12 +156,34 @@
                 line: { color: "#f7c741", width: 3, shape: "spline", smoothing: 0.6 }
             }
         ], {
-            title: "Satisfaction Over Time (daily average, smoothed)",
+            title: "Satisfaction Over Time",
             yaxis: { title: "Average satisfaction" },
-            xaxis: { title: "Date" }
+            xaxis: { title: "Date" },
+            legend: { orientation: "h", x: 0, y: 1.1 }
         });
 
         const locationTarget = document.getElementById("plot2");
+        const steppedPalette = [
+            "#c47a00", // rich amber (most frequent)
+            "#d28a08",
+            "#e19a12",
+            "#f7c741", // signature gold
+            "#efbc4a",
+            "#f4cc6a",
+            "#f7d98f",
+            "#f7e5b3",
+            "#eae0c6",
+            "#eee9dc",
+            "#f4f3ef",
+            "#faf9f7"  // lightest (least frequent)
+        ];
+
+        const locationColors = locationLabels.map((label, idx) => {
+            if (label === "Other") return "#cfc8bb";
+            const paletteIndex = Math.min(idx, steppedPalette.length - 1);
+            return steppedPalette[paletteIndex];
+        });
+
         if (!locationLabels.length && locationTarget) {
             locationTarget.innerHTML = "<p class=\"chart-note\">No repeat locations yet — start logging more visits to see this chart.</p>";
         } else {
@@ -172,7 +194,7 @@
                 text: locationCountsText,
                 textinfo: "label+percent",
                 hovertemplate: "%{label}<br>%{value}% (%{text})<extra></extra>",
-                marker: { colors: ["#111111", "#444444", "#666666", "#888888", "#aaaaaa", "#cccccc"] }
+                marker: { colors: locationColors }
             }], {
                 title: "Frequency by Location (percent of visits)",
                 showlegend: false
