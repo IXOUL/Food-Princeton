@@ -100,7 +100,6 @@
             return;
         }
         el.innerHTML = `
-            <div class="outlier-title">Single-visit locations</div>
             <div class="pill-list">
                 ${items.map(name => `<span class="pill">${name}</span>`).join("")}
             </div>
