@@ -44,9 +44,9 @@
         const mealBuckets = [
             { label: "Breakfast", slots: ["Morning"] },
             { label: "Lunch", slots: ["Noon"] },
+            { label: "Afternoon", slots: ["Afternoon"] },
             { label: "Dinner", slots: ["Evening"] },
-            { label: "Afternoon Late Meal", slots: ["Afternoon"] },
-            { label: "Night Late Meal", slots: ["Night"] }
+            { label: "Night", slots: ["Night"] }
         ];
 
         return mealBuckets.map(bucket => {
@@ -64,8 +64,8 @@
         const days = totalDays || 1;
         const mealBuckets = [
             { label: "Breakfast", slots: ["Morning"] },
-            { label: "Lunch<br>(Lunch + Afternoon)", slots: ["Noon", "Afternoon"] },
-            { label: "Dinner<br>(Dinner + Night)", slots: ["Evening", "Night"] }
+            { label: "Lunch", slots: ["Noon", "Afternoon"] },
+            { label: "Dinner", slots: ["Evening", "Night"] }
         ];
 
         return mealBuckets.map(bucket => {
@@ -201,6 +201,13 @@
         }
 
         const mealChartData = getMealChartData(sortedData, totalDays);
+        const mealOrderLabels = [
+            "Breakfast",
+            "Lunch",
+            "Afternoon",
+            "Dinner",
+            "Night"
+        ];
         const mealComboData = getMealComboData(sortedData, totalDays);
 
         Plotly.newPlot("plot4", [{
@@ -214,8 +221,12 @@
         }], {
             title: "Meal Time (percent of days)",
             xaxis: { title: "Percent of days with this meal" },
-            yaxis: { automargin: true },
-            margin: { l: 140 }
+            yaxis: {
+                automargin: true,
+                categoryorder: "array",
+                categoryarray: mealOrderLabels
+            },
+            margin: { l: 90, r: 12 }
         });
 
         Plotly.newPlot("plot5", [{
@@ -230,7 +241,7 @@
             title: "Core Meals (percent of days)",
             xaxis: { title: "Percent of days with this meal (combined)" },
             yaxis: { automargin: true },
-            margin: { l: 180 }
+            margin: { l: 80, r: 30 }
         });
 
         renderSummary("viz-summary", sortedData);
