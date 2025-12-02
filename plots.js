@@ -124,12 +124,19 @@
             .filter(([, count]) => count === 1)
             .map(([name]) => name);
         const locationLabels = frequentLocations.map(([name]) => name);
+        const singleVisitTotal = singleVisitLocations.length;
         const locationPercents = frequentLocations.map(([, count]) =>
             Math.round((count / totalVisits) * 1000) / 10
         );
         const locationCountsText = frequentLocations.map(([, count], idx) =>
             `${count} (${locationPercents[idx]}%)`
         );
+        if (singleVisitTotal > 0) {
+            const otherPercent = Math.round((singleVisitTotal / totalVisits) * 1000) / 10;
+            locationLabels.push("Other");
+            locationPercents.push(otherPercent);
+            locationCountsText.push(`${singleVisitTotal} (${otherPercent}%)`);
+        }
 
         Plotly.newPlot("plot1", [
             {
@@ -146,7 +153,7 @@
                 type: "scatter",
                 mode: "lines",
                 name: "Smoothed (3-day)",
-                line: { color: "#111111", width: 3, shape: "spline", smoothing: 0.6 }
+                line: { color: "#f7c741", width: 3, shape: "spline", smoothing: 0.6 }
             }
         ], {
             title: "Satisfaction Over Time (daily average, smoothed)",

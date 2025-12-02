@@ -649,19 +649,27 @@ h1, h2 {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .location-list {
-    flex: 1 1 240px;
+    flex: 0 0 auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
     max-height: 420px;
     overflow-y: auto;
+    width: fit-content;
+    min-width: 160px;
+    max-width: 220px;
 }
 
 .location-feed {
-    flex: 2 1 420px;
+    flex: 1 1 340px;
+    max-width: 640px;
     background: #ffffff;
     border-radius: 12px;
     padding: 18px;

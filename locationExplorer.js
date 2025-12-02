@@ -49,7 +49,9 @@
         };
 
         let firstButton = null;
-        groups.forEach((entries, location) => {
+        const sortedGroups = Array.from(groups.entries()).sort(([, a], [, b]) => b.length - a.length);
+
+        sortedGroups.forEach(([location, entries]) => {
             const button = document.createElement("button");
             button.className = "location-btn";
             button.textContent = `${location} (${entries.length})`;
