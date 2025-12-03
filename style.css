@@ -200,6 +200,34 @@ h1, h2 {
     color: #000000;
 }
 
+.footer-center {
+    text-align: center;
+    margin: 60px 0 80px;
+}
+
+.footer-center a {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: #111111;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease, letter-spacing 0.2s ease;
+}
+
+.footer-center a:hover {
+    color: #f7c741;
+    letter-spacing: 0.08em;
+    text-decoration: underline;
+    transform: translateY(-2px);
+}
+
+.footer-center p {
+    margin: 0;
+    font-size: 1.05rem;
+    color: #111111;
+}
+
 .container {
     width: 88%;
     max-width: 1200px;
