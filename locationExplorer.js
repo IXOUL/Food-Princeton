@@ -1,7 +1,16 @@
 (function (global) {
+    const getLocationLabel = (entry = {}) => {
+        const base = (entry.specificLocation || "Unknown").trim();
+        const nycDetail = (entry.nycLocation || "").trim();
+        if (base.toLowerCase() === "nyc" && nycDetail) {
+            return `NYC · ${nycDetail}`;
+        }
+        return base || "Unknown";
+    };
+
     const getLocationGroups = (sortedData = []) =>
         sortedData.reduce((map, item) => {
-            const key = item.specificLocation || "Unknown";
+            const key = getLocationLabel(item);
             if (!map.has(key)) {
                 map.set(key, []);
             }
@@ -12,10 +21,12 @@
     const buildEntryCard = (entry) => {
         const card = document.createElement("div");
         card.className = "location-entry";
+        const foodLine = entry.foodItems ? `<span class="food-line">What I ate: ${entry.foodItems}</span>` : "";
         card.innerHTML = `
-            <img src="${entry.img}" alt="${entry.specificLocation}">
+            <img src="${entry.img}" alt="${getLocationLabel(entry)}">
             <div class="location-entry-details">
                 <strong>${entry.date} · ${entry.timeOfDay}</strong>
+                ${foodLine}
                 <span>${entry.description || entry.note || "No diary note available."}</span>
                 <span>Emotion: ${entry.emotion || "n/a"} · Satisfaction: ${entry.satisfaction ?? "—"}</span>
             </div>

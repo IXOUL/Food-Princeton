@@ -13,6 +13,15 @@
         return new Date(year, (month || 1) - 1, day || 1);
     };
 
+    const formatLocationLabel = (entry = {}) => {
+        const base = (entry.specificLocation || "Unknown").trim();
+        const nycDetail = (entry.nycLocation || "").trim();
+        if (base.toLowerCase() === "nyc" && nycDetail) {
+            return `NYC · ${nycDetail}`;
+        }
+        return base || "Unknown";
+    };
+
     const formatISODate = (dateObj) => {
         const year = dateObj.getFullYear();
         const month = String(dateObj.getMonth() + 1).padStart(2, "0");
@@ -62,12 +71,17 @@
 
         const moodKey = item.colorMood || item.emotion;
         const moodColor = moodColors[moodKey] || "#e0e0e0";
+        const locationLabel = formatLocationLabel(item);
+        const foodLine = item.foodItems ? `<div class="food-line">What I ate: ${item.foodItems}</div>` : "";
         cell.style.borderColor = moodColor;
         cell.innerHTML = `
             <img src="${item.img}" alt="">
-            <div class="photo-info">${item.exactTime} · ${item.specificLocation}</div>
+            <div class="photo-info">
+                <div>${item.exactTime} · ${locationLabel}</div>
+                ${foodLine}
+            </div>
         `;
-        cell.title = `${item.date} ${item.exactTime} — ${item.specificLocation}`;
+        cell.title = `${item.date} ${item.exactTime} — ${locationLabel}${item.foodItems ? " — " + item.foodItems : ""}`;
         cell.onclick = () => onCellClick(item);
 
         return cell;

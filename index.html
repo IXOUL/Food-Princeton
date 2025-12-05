@@ -200,9 +200,13 @@
          ============================ -->
     <div class="modal" id="modal">
         <div class="modal-content">
-            <img id="modal-img" class="modal-img" />
-            <h3 id="modal-title"></h3>
-            <p id="modal-text"></p>
+            <div class="modal-image-wrap">
+                <img id="modal-img" class="modal-img" />
+            </div>
+            <div class="modal-info">
+                <h3 id="modal-title"></h3>
+                <div id="modal-text"></div>
+            </div>
         </div>
     </div>
 
@@ -217,6 +221,14 @@
             .then(response => response.json())
             .then(data => {
                 const { sortedData } = CalendarModule.prepareEntries(data);
+                const formatLocationLabel = (entry = {}) => {
+                    const base = (entry.specificLocation || "Unknown").trim();
+                    const nycDetail = (entry.nycLocation || "").trim();
+                    if (base.toLowerCase() === "nyc" && nycDetail) {
+                        return `NYC · ${nycDetail}`;
+                    }
+                    return base || "Unknown";
+                };
 
                 /* ============================
                    MODAL BINDING
@@ -232,10 +244,21 @@
                         if (val === "n" || val === false) return "Restaurant";
                         return "";
                     })();
+                    const locationLabel = formatLocationLabel(item);
                     document.getElementById("modal-title").innerText =
-                        [item.date, locationTag, item.specificLocation].filter(Boolean).join(" · ");
-                    document.getElementById("modal-text").innerText =
-                        item.description || item.note || "Too normal to give comment";
+                        [item.date, locationTag, locationLabel].filter(Boolean).join(" · ");
+                    const foodLine = item.foodItems
+                        ? item.foodItems
+                        : "(not recorded)";
+                    const commentLine = (() => {
+                        if (item.description) return item.description;
+                        if (item.note) return item.note;
+                        return "Too normal to give comment";
+                    })();
+                    document.getElementById("modal-text").innerHTML = `
+                        <div class="modal-line"><span class="modal-label">What I ate</span><span class="modal-value">${foodLine}</span></div>
+                        <div class="modal-line"><span class="modal-label">My comment</span><span class="modal-value">${commentLine}</span></div>
+                    `;
                     modal.style.display = "flex";
                 };
 
